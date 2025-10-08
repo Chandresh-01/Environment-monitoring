@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Comparison Result</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 40px;
+        }
+
+        img {
+            max-width: 90%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: #2b6777;
+        }
+
+        .download-btn {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #2b6777;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            background-color: #23606d;
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 Environmental Change Trend</h1>
+    <img src="{{ url_for('static', filename='result_chart.png') }}" alt="Trend Graph">
+    <br><br>
+    <a href="{{ url_for('static', filename='result.docx') }}" class="download-btn" download>
+        ⬇️ Download Full Report
+    </a>
+</body>
+</html>

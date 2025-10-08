@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Environmental Monitoring with AI</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f8fc;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .container {
+            margin-top: 40px;
+        }
+        h1 {
+            text-align: center;
+            color: #1e3d59;
+            font-weight: 700;
+        }
+        .upload-box {
+            padding: 20px;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            margin-bottom: 20px;
+        }
+        .add-year-btn {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Environmental Monitoring with AI 🌍</h1>
+    <form action="/compare" method="POST" enctype="multipart/form-data" id="uploadForm">
+        <div id="yearInputs">
+            <div class="upload-box">
+                <label class="form-label"><strong>Year:</strong></label>
+                <input type="text" class="form-control mb-2 year-input" placeholder="e.g., 2018" required oninput="updateFileInputName(this)">
+                <input type="file" class="form-control file-input" multiple accept="image/*" required>
+            </div>
+        </div>
+        <button type="button" class="btn btn-outline-primary add-year-btn" onclick="addYearInput()">➕ Add Another Year</button>
+        <br>
+        <button type="submit" class="btn btn-success">Compare & Generate Report</button>
+    </form>
+</div>
+
+<script>
+    let yearIndex = 1;
+
+    function addYearInput() {
+        const container = document.getElementById('yearInputs');
+        const newDiv = document.createElement('div');
+        newDiv.classList.add('upload-box');
+
+        newDiv.innerHTML = `
+            <label class="form-label"><strong>Year:</strong></label>
+            <input type="text" class="form-control mb-2 year-input" placeholder="e.g., 2020" required oninput="updateFileInputName(this)">
+            <input type="file" class="form-control file-input" multiple accept="image/*" required>
+        `;
+
+        container.appendChild(newDiv);
+    }
+
+    function updateFileInputName(input) {
+        const fileInput = input.parentElement.querySelector('.file-input');
+        const year = input.value.trim();
+
+        // Sanitize and validate the year
+        if (/^\d{4}$/.test(year)) {
+            fileInput.setAttribute('name', `files_${year}`);
+        } else {
+            fileInput.removeAttribute('name');
+        }
+    }
+</script>
+
+</body>
+</html>
