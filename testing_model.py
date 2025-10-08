@@ -23,14 +23,14 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 
 # Load your haze detection model
-model = load_model("haze_cnn_model.keras")
+model = load_model("cnn_model.keras")
 
 # Binary class labels
 class_labels = {0: "Clear", 1: "Hazy"}
 
 # GUI Window
 root = tk.Tk()
-root.title("Haze Detection Classifier")
+root.title("Detection Classifier")
 root.geometry("600x500")
 root.configure(bg="white")
 
@@ -70,3 +70,4 @@ result_label.pack(pady=20)
 
 # Launch GUI
 root.mainloop()
+
