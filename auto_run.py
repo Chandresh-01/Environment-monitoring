@@ -1,3 +1,13 @@
+"""
+Auto Satellite Monitoring Script
+💡 Note:
+- This script automatically downloads satellite images and generates environmental & haze reports.
+- If you want to **auto-run the monitoring**, you can use this file.
+- Otherwise, this file is **optional** — you don’t need it to just run Analyzer.py manually.
+- ⚠️ If you use this file, you **don’t need to run Analyzer.py separately**, 
+  because it calls the analyze_and_generate_report function internally.
+"""
+
 # Step 1: Install these first
 # pip install sentinelhub schedule opencv-python
 
@@ -254,3 +264,4 @@ def analyze_and_generate_report(upload_folder, result_folder, chart_path):
     report_path = os.path.join(result_folder, "final_report.docx")
     generate_doc(env_data, haze_data, forecast_data, report_path)
     print("\u2705 Report and chart generated successfully.")
+
