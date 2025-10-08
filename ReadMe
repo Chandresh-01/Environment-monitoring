@@ -1,0 +1,136 @@
+========================================
+ENVIRONMENTAL MONITORING WITH AI
+========================================
+
+A Python-based project for analyzing environmental changes and haze levels using satellite or uploaded images. The system employs **Convolutional Neural Networks (CNNs)** for image classification, **linear regression** for forecasting, and a **Flask web interface** for user interaction, ultimately generating a comprehensive DOCX report.
+
+----------------------------------------
+FOLDER STRUCTURE
+----------------------------------------
+
+env_app/
+
+│
+
+├── models/            # Repository for **trained CNN models**. Critical for inference.
+
+│   ├── environment_cnn_model.keras    # Model for land-use classification (e.g., urban, water).
+
+│   └── haze_cnn_model.keras           # Model for binary classification (Clear vs. Hazy).
+
+│
+
+├── results/           # **Output directory** for final, detailed analysis reports.
+
+│   └── final_report.docx              # The comprehensive, generated report.
+
+│
+
+├── static/            # **Web-accessible assets** for the Flask app.
+
+│   └── result_chart.png               # Stores the visualized trend chart for web display and download.
+
+│
+
+├── templates/         # **HTML files** defining the Flask application's front-end layout.
+
+│   ├── index.html                     # The main upload and input page.
+
+│   └── result.html                    # The page displaying analysis results and download links.
+
+│
+
+├── uploads/           # **Temporary storage** for user-uploaded images. This folder is emptied after each run to maintain cleanliness.
+
+│
+
+├── analyzer.py        # **Core Logic Module**. Handles image preprocessing, model loading, classification, data aggregation, chart generation, forecasting, and DOCX report compilation.
+
+├── app.py             # **Flask Application Entry Point**. Manages routing, file uploads, calls the analyzer.py functions, and renders HTML templates.
+
+└── auto_run.py        # **Scheduled Monitoring Script**. Contains logic for fetching satellite data (e.g., SentinelHub API integration) and runs the analysis module periodically.
+
+
+----------------------------------------
+FEATURES
+----------------------------------------
+
+- **Environment Classification (CNN)**: Utilizes a trained CNN to categorize land cover in the input images into distinct types: **Green Cover**, **Waterbody**, **Urban Area**, **Arid Zone**, etc. This provides a quantitative breakdown of land usage over time.
+- **Haze Detection (CNN)**: A dedicated CNN classifies input images as either "**Clear**" or "**Hazy**," providing essential data for air quality monitoring and filtering low-quality satellite images.
+- **Automated Reports (python-docx)**: Generates a professional **DOCX report** that includes a summary of yearly environmental changes, detailed haze level analysis, embedded trend charts, and evidence-based policy suggestions.
+- **Charts & Graphs (Matplotlib)**: Produces visual representations of environmental metrics (like Green Cover percentage) and haze frequency over multiple years, aiding in quick trend identification.
+- **Forecasting (Linear Regression)**: Predicts the future percentage of Green Cover based on historical data trends, providing valuable insights for urban planning and conservation efforts.
+- **Flask Web Interface**: A user-friendly front-end that allows users to upload multiple images (grouped by year) and instantly view the analysis results, with an option to download the full report.
+- **GUI Testing (Optional)**: Provides a lightweight GUI interface for developers to quickly test the performance of the single **`.keras`** models without needing the full Flask web setup.
+- **Optional Auto Satellite Monitoring (Schedule)**: The `auto_run.py` script leverages a scheduling library to periodically fetch up-to-date satellite imagery, ensuring continuous, hands-off monitoring.
+
+----------------------------------------
+SETUP & INSTALLATION
+----------------------------------------
+
+1. Clone the repository
+   git clone <your-repo-url>
+   cd env_app
+
+2. Create and Activate Virtual Environment (Recommended)
+   python -m venv venv
+   source venv/bin/activate   # Linux/Mac
+   venv\Scripts\activate      # Windows
+
+3. Install Dependencies
+   pip install -r requirements.txt
+
+   Required packages (if not using requirements.txt):
+   pip install tensorflow keras matplotlib numpy pillow flask python-docx schedule opencv-python
+
+----------------------------------------
+USAGE
+----------------------------------------
+
+### 1. Using Flask Web Interface
+
+Run the application server:
+
+   python app.py
+
+- **Access**: Open your browser to -> [http://127.0.0.1:5000](http://127.0.0.1:5000)
+- **Input**: Upload a series of satellite or aerial images, making sure they are correctly labeled/grouped by year.
+- **Process**: Click **Compare & Generate Report** to initiate `analyzer.py`.
+- **Output**: Download the generated **DOCX report** and the **result_chart.png** from the results page.
+
+Notes:
+- The `uploads/` folder is **temporary** and is automatically cleared after the analysis run is complete.
+- The `static/` folder holds the generated charts and report files temporarily for downloading.
+
+### 2. Auto Satellite Image Analysis
+
+Run the automated script (requires configuration of API keys/coordinates):
+
+   python auto_run.py
+
+- **Function**: This script automatically handles image acquisition (e.g., from SentinelHub) for defined geographic coordinates.
+- **Process**: It runs the full analysis pipeline on the newly fetched images and generates updated charts and reports in the `results/` directory.
+
+Notes:
+- This script is designed to run independently, leveraging the core logic in `analyzer.py`.
+- **Crucial Step**: You must replace **`INSTANCE_ID`** in the `auto_run.py` script with your valid SentinelHub instance ID for image fetching to work.
+
+### 3. GUI Image Testing
+
+This is a utility function for quick model validation.
+
+- **Function**: Allows rapid, visual testing of a single image against either the `environment_cnn_model.keras` or `haze_cnn_model.keras`.
+- **Customization**: To switch the model being tested, developers must directly edit the model file path and corresponding class labels within the GUI function call in `analyzer.py` or a dedicated test script.
+- **Scope**: Designed strictly for single image testing, not for batch processing or report generation.
+
+----------------------------------------
+TRAINING MODELS
+----------------------------------------
+
+Both `environment_cnn_model.keras` and `haze_cnn_model.keras` were trained using the same underlying CNN script structure.
+
+To train another model:
+1. **Dataset Path**: Change the `train_dir` and `val_dir` paths in the training script to point to your new dataset (e.g., for fire detection, or flood mapping).
+2. **Model Saving**: Change the `model.save()` filename to save the new model with a unique name (e.g., `flood_cnn_model.keras`).
+
+You can train both the environment and haze models (and any future models) separately using the same CNN script structure by adjusting these simple parameters.
